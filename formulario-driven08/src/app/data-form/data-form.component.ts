@@ -1,4 +1,5 @@
-import { map } from 'rxjs/operators';
+import { VerificaEmailService } from './services/verifica-email.service';
+import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ConsultaCepService } from './../shared/services/consulta-cep.service';
 import { EstadoBr } from './../../assets/dados/estado-br.model';
@@ -6,7 +7,7 @@ import { DropdownService } from './../shared/services/dropdown.service';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Pipe } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ValueTransformer } from '@angular/compiler/src/util';
+
 
 @Component({
   selector: 'app-data-form',
@@ -26,14 +27,11 @@ frameworks = ['Angular', 'React', 'Vue', 'Sencha'];
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private dropdownService: DropdownService,
-    private consultaCepService: ConsultaCepService
+    private consultaCepService: ConsultaCepService,
+    private verificaEmailService: VerificaEmailService
     ) { }
 
   ngOnInit(): void {
-
-    // this.dropdownService.getEstadosBR()
-    // .subscribe((dados: EstadoBr[]) => {this.estados = dados; console.log(dados);
-    // });
 
     this.estados = this.dropdownService.getEstadosBR();
     this.tecnologias = this.dropdownService.getTecnologias();
@@ -42,8 +40,9 @@ frameworks = ['Angular', 'React', 'Vue', 'Sencha'];
     console.log(this.tecnologias);
 
     this.formulario = this.formBuilder.group({
-      nome: [null, [Validators.required]],
-      email:  [null, [Validators.required, Validators.email]],
+      nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
+      email:  [null, [Validators.required, Validators.email], [this.validarEmail.bind(this)]],
+      emailConfirm:  [null, [this.emailConfirmValidator('email')]],
       endereco: this.formBuilder.group({
           cep: [null, [Validators.required, this.cepValidator]],
           numero: [null, [Validators.required]],
@@ -87,6 +86,28 @@ frameworks = ['Angular', 'React', 'Vue', 'Sencha'];
     };
     return validator;
   }
+
+  emailConfirmValidator(otherField: string){
+    const validator = (formControl: FormControl) => {
+      if(otherField == null ){
+        throw new Error('É necessário informar um campo')
+      }
+
+      if (!formControl.root || !(<FormGroup>formControl.root).controls){
+        return null;
+      }
+
+      const field = (<FormGroup>formControl.root).get(otherField);
+      if (!field) {
+        throw new Error("É necessário informar um campo válido")
+      }
+
+      if (field.value !== formControl.value) {
+        return {emailConfirmValidator : "Erro confirmação dos campos"};
+      }
+    };
+    return validator;
+   }
 
   // tslint:disable-next-line: typedef
   cepValidator(control: FormControl) {
@@ -179,6 +200,13 @@ populaDadosForm(dados){
         estado: dados.uf
     }
     });
+}
+
+validarEmail(formControl: FormControl) {
+  return this.verificaEmailService.verificarEmail(formControl.value)
+  .pipe(
+    map(emailExiste => emailExiste ? {emailInvalido : true} : null)
+  );
 }
 
   }

@@ -6,8 +6,9 @@
       <div class="form-group" [ngClass]="">
         <label for="nome">Nome</label>
         <input type="text" class="form-control" formControlName="nome" id="nome" placeholder="Nome">
-        <app-campo-control-erro [mostrarErro]="verificaValidTouched('nome')" mensagemErro="Nome é obrigatório.">
-        </app-campo-control-erro>
+        <app-error-field [control]="formulario.get('nome')" label="Nome">
+        </app-error-field>
+
       </div>
     </div>
   </div>
@@ -20,8 +21,24 @@
         <input type="email" class="form-control" formControlName="email" id="email" placeholder="mail@email.com">
       </div>
       <app-campo-control-erro [mostrarErro]="verificaEmail()" [mensagemErro]="verificaEmail()"></app-campo-control-erro>
+      <app-campo-control-erro [mostrarErro]="formulario.get('email').status === 'PENDING'" mensagemErro="Validando email....."></app-campo-control-erro>
+      <app-campo-control-erro [mostrarErro]="formulario.get('email').status === 'VALID'" mensagemErro="Email válido!"></app-campo-control-erro>
+      <app-campo-control-erro [mostrarErro]="formulario.get('email').hasError('emailInvalido')" mensagemErro="Email já cadastrado!"></app-campo-control-erro>
     </div>
   </div>
+
+    <!-- CONFIRMAR EMAIL -->
+    <div class="row">
+      <div class="col-12">
+        <div class="form-group" [ngClass]="">
+          <label for="emailConfirm">Confirmação email</label>
+          <input type="emailConfirm" class="form-control" formControlName="emailConfirm" id="emailConfirm" placeholder="mail@email.com">
+        </div>
+        <app-campo-control-erro [mostrarErro]="formulario.get('emailConfirm').hasError('emailConfirmValidator')" mensagemErro="Emails não são iguais"></app-campo-control-erro>
+
+      </div>
+    </div>
+
 
   <div formGroupName="endereco">
     <!-- CEP, NUMERO, COMPLEMENTO -->
