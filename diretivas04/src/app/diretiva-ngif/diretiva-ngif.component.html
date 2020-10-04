@@ -1,0 +1,23 @@
+<div class="container">
+
+    <div class="row">
+        <h5>*ngIf</h5>
+    </div>
+    <br>
+
+    <div class="row">
+        <div [hidden]="mostrarCursos">
+            Lista de cursos 
+            <ul class="list-group" *ngFor="let curso of cursos">
+                <li class="list-group-item">{{ cursos }}</li>
+            </ul>
+        </div>
+        <div [hidden]="!mostrarCursos">
+            Não há cursos
+        </div>
+    </div>
+
+    <br>
+    <div class="row">
+         
+</div>
