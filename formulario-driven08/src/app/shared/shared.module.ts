@@ -8,12 +8,15 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorFieldComponent } from './error-field/error-field.component';
+import { InputFieldComponent } from './input-field/input-field.component';
+import { BaseFormComponent } from './base-form/base-form.component';
 
 @NgModule({
   declarations: [
     FormDebugComponent,
     CampoControlErroComponent,
     ErrorFieldComponent,
+    InputFieldComponent,
   ],
   imports: [
     CommonModule,
@@ -24,7 +27,8 @@ import { ErrorFieldComponent } from './error-field/error-field.component';
   exports: [
     FormDebugComponent,
     CampoControlErroComponent,
-    ErrorFieldComponent
+    ErrorFieldComponent,
+    InputFieldComponent,
   ],
   providers: [
     DropdownService

@@ -3,15 +3,17 @@
   <!-- NOME -->
   <div class="row">
     <div class="col-12">
-      <div class="form-group" [ngClass]="">
-        <label for="nome">Nome</label>
-        <input type="text" class="form-control" formControlName="nome" id="nome" placeholder="Nome">
-        <app-error-field [control]="formulario.get('nome')" label="Nome">
-        </app-error-field>
-
-      </div>
+      <app-input-field
+      formControlName="nome"
+      [classeCss]="aplicaCssErro('')"
+      id="nome" label="Nome"
+      [control]="formulario.get('nome')"
+      placeholder="Nome..."
+    ></app-input-field>
     </div>
   </div>
+
+
 
   <!-- EMAIL -->
   <div class="row">
@@ -39,15 +41,13 @@
       </div>
     </div>
 
-
-  <div formGroupName="endereco">
     <!-- CEP, NUMERO, COMPLEMENTO -->
+  <div formGroupName="endereco">
     <div class="row">
       <div class="col-3">
         <div class="form-group" [ngClass]="aplicaCssErro('')">
           <label for="cep">CEP</label>
-          <input type="text" class="form-control" formControlName="cep" id="cep" placeholder="81030020"
-            (blur)=buscaCEP()>
+          <input type="text" class="form-control" formControlName="cep" id="cep" placeholder="81030020">
 
           <app-campo-control-erro [mostrarErro]="verificaRequired('endereco.cep')"
             mensagemErro="CEP é obrigatório."></app-campo-control-erro>
@@ -145,7 +145,7 @@
           </div>
         </div>
 
-      </div> >
+      </div>
     </div>
 
   </div>

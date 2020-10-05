@@ -1,0 +1,6 @@
+{
+  "cursos": [
+    { "id": 1, "title": "Angular" },
+    {"id": 2, "title": "Java"}
+  ]
+}
